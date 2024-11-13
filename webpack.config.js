@@ -1,13 +1,16 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-const path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
+const path = require('path')
 
 module.exports = {
-  entry: "./src/index.tsx",
-  mode: "development",
+  entry: './src/index.tsx',
+  mode: 'development',
   devServer: {
     port: 3004,
     historyApiFallback: true,
+    static: {
+      directory: path.resolve(__dirname, 'dist')
+    }
   },
   module: {
     rules: [
@@ -16,54 +19,54 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
               presets: [
-                "@babel/preset-env",
-                "@babel/preset-react",
-                "@babel/preset-typescript",
-              ],
-            },
-          },
-        ],
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/preset-typescript'
+              ]
+            }
+          }
+        ]
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
-      },
-    ],
+        use: ['style-loader', 'css-loader', 'postcss-loader']
+      }
+    ]
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "weather",
-      filename: "remoteEntry.js",
+      name: 'weather',
+      filename: 'remoteEntry.js',
       exposes: {
-        "./Weather": "./src/App",
+        './Ads': './src/App'
       },
       shared: {
         react: {
           singleton: true,
           eager: true,
-          requiredVersion: require("./package.json").dependencies.react,
+          requiredVersion: require('./package.json').dependencies.react
         },
-        "react-dom": {
+        'react-dom': {
           singleton: true,
           eager: true,
-          requiredVersion: require("./package.json").dependencies["react-dom"],
-        },
-      },
+          requiredVersion: require('./package.json').dependencies['react-dom']
+        }
+      }
     }),
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
-    }),
+      template: './public/index.html'
+    })
   ],
   output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "dist"),
-    publicPath: "http://localhost:3004/",
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: 'http://localhost:3004/'
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: ['.tsx', '.ts', '.js']
   },
-  target: "web",
-};
+  target: 'web'
+}

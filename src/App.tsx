@@ -1,11 +1,12 @@
-import React from "react";
+import React from 'react'
+import './styles/global.css'
 
 function App() {
   return (
-    <div className="App">
-      <div className="container">This is my weather!</div>
+    <div className="">
+      <span>weather</span>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
