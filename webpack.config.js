@@ -41,7 +41,7 @@ module.exports = {
       name: 'weather',
       filename: 'remoteEntry.js',
       exposes: {
-        './Ads': './src/App'
+        './Weather': './src/App'
       },
       shared: {
         react: {
