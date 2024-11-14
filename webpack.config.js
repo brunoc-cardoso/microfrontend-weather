@@ -8,9 +8,16 @@ module.exports = {
   devServer: {
     port: 3004,
     historyApiFallback: true,
-    static: {
-      directory: path.resolve(__dirname, 'dist')
-    }
+    static: [
+      {
+        directory: path.resolve(__dirname, 'public'),
+        publicPath: '/'
+      },
+      {
+        directory: path.resolve(__dirname, 'dist'),
+        publicPath: '/dist'
+      }
+    ]
   },
   module: {
     rules: [
@@ -33,6 +40,13 @@ module.exports = {
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader', 'postcss-loader']
+      },
+      {
+        test: /\.svg$/,
+        type: 'asset/resource', // Alterar para tratar o SVG como recurso estático
+        generator: {
+          filename: 'images/[name][ext][query]'
+        }
       }
     ]
   },
